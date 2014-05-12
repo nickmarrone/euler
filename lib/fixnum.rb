@@ -1,6 +1,36 @@
 require 'prime'
 
 class Fixnum
+  WORDS = {
+    "1" => "one",
+    "2" => "two",
+    "3" => "three",
+    "4" => "four",
+    "5" => "five",
+    "6" => "six",
+    "7" => "seven",
+    "8" => "eight",
+    "9" => "nine",
+    "10" => "ten",
+    "11" => "eleven",
+    "12" => "twelve",
+    "13" => "thirteen",
+    "14" => "fourteen",
+    "15" => "fifteen",
+    "16" => "sixteen",
+    "17" => "seventeen",
+    "18" => "eighteen",
+    "19" => "nineteen",
+    "20" => "twenty",
+    "30" => "thirty",
+    "40" => "forty",
+    "50" => "fifty",
+    "60" => "sixty",
+    "70" => "seventy",
+    "80" => "eighty",
+    "90" => "ninety"
+  }
+
   def even?
     self % 2 == 0
   end
@@ -94,6 +124,40 @@ class Fixnum
   def square_of_the_sum
     (1..self).inject(&:+)**2
   end
+
+  def in_words
+    return "zero" if self == 0
+    return "negative " + in_words_helper(self*-1) if self < 0
+
+    in_words_helper(self)
+  end
+
+  private
+
+  def in_words_helper(number)
+    num_s = number.to_s
+    if number <= 20
+      WORDS[num_s]
+    elsif number < 100
+      key = num_s[0] + '0'
+      remainder = number % 10
+      result = WORDS[key]
+      result += " #{remainder.in_words}" unless remainder == 0
+      result
+    elsif number < 1000
+      result = WORDS[num_s[0]] + ' hundred'
+      remainder = number % 100
+      result += " and #{remainder.in_words}" unless remainder == 0
+      result
+    elsif number < 1_000_000
+      first_half = number / 1000
+      remainder = number % 1000
+      result = "#{first_half.in_words} thousand"
+      result += " #{remainder.in_words}" unless remainder == 0
+      result
+    end
+  end
+
 end
 
 class Array
