@@ -39,6 +39,10 @@ class Fixnum
     self % 2 == 1
   end
 
+  def num_digits
+    self.to_s.length
+  end
+
   def palindrome?
     self.to_s == self.to_s.reverse
   end
