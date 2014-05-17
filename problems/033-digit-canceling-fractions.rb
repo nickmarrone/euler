@@ -10,6 +10,7 @@
 # If the product of these four fractions is given in its lowest common terms,
 # find the value of the denominator.
 
+require '../lib/fixnum'
 
 # Return the result of num/den if they have common digits, otherwise nil
 def strip_common_digits(num, den)
@@ -40,14 +41,13 @@ results = []
   ((num+1)..99).each do |den|
     a, b = strip_common_digits(num, den)
     if a && a/b == num.to_f/den.to_f
-      p "#{num}/#{den} => #{a.to_i}/#{b.to_i}"
       results << [a, b]
     end
   end
 end
 
-top = results.inject(1){|sum, n| sum *= n[0]; sum}
-bottom = results.inject(1){|sum, n| sum *= n[1]; sum}
+top = results.inject(1){|sum, n| sum *= n[0]; sum}.to_i
+bottom = results.inject(1){|sum, n| sum *= n[1]; sum}.to_i
 
-puts
-p "Result: #{top}/#{bottom}... simplify me"
+a, b = Fixnum.simplify_fraction(top, bottom)
+p "Result: #{a}/#{b}"
