@@ -129,6 +129,24 @@ class Fixnum
     (1..self).inject(&:+)**2
   end
 
+  #Simplify a fraction from, e.g. 7/21 => 1/3
+  def self.simplify_fraction(num, den)
+    pass_without_division = true
+
+    while true
+      return num, den unless pass_without_division
+
+      pass_without_division = true
+      (2..num).each do |x|
+        if num % x == 0 && den % x == 0
+          num = num / x
+          den = den / x
+          pass_without_division = false
+        end
+      end
+    end
+  end
+
   def in_words
     return "zero" if self == 0
     return "negative " + in_words_helper(self*-1) if self < 0
