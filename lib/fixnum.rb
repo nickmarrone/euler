@@ -44,7 +44,22 @@ class Fixnum
   end
 
   def palindrome?
-    self.to_s == self.to_s.reverse
+    num = self.to_s
+    num == num.reverse
+  end
+
+  def binary_palindrome?
+    binary = self.to_s(2)
+    binary == binary.reverse
+  end
+
+  def factorial
+    @factorial_hash ||= {0 => 0, 1 => 1}
+    @factorial_hash[self] || @factorial_hash[self] = (self-1).factorial * self
+  end
+
+  def to_a
+    self.to_s.split('').map(&:to_i)
   end
 
   # Get array of factors of this number
