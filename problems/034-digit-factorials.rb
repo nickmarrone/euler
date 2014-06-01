@@ -14,8 +14,6 @@ end
 
 # Can't have more than 8 digits because the size of the number
 # greatly exceeds the sum of factorials
-(1..25).each { |x| puts "#{x}: #{9.factorial * x}" }
-
 top = 9.factorial * 7
 
 (3..top).each do |n|
