@@ -3,7 +3,7 @@
 
 class TriangularSequence
   def initialize
-    @current = 1
+    @current = 0
     @sum = 0
   end
 

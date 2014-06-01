@@ -65,7 +65,7 @@ class Fixnum
   # Get array of factors of this number
   #
   # @return factors [Array] of [Fixnum]
-  def factors
+  def factors1
     results = []
     total = 1
 
@@ -95,13 +95,24 @@ class Fixnum
     results
   end
 
+  def factors
+    primes, powers = self.prime_division.transpose
+    exponents = powers.map{|i| (0..i).to_a}
+
+    divisors = exponents.shift.product(*exponents).map do |powers|
+      primes.zip(powers).map{|prime, power| prime ** power}.inject(:*)
+    end
+
+    divisors.sort.map{|div| [div, self / div]}
+  end
+
   # How many divisors does this number have?
   # Equation: If factors are a^x * b^y * c^z .... = n, then number of divisors is (x+1) * (y+1) * (z+1) ...
   #
   # @return [Fixnum]
   def number_of_divisors
-    group = self.factors.group_numbers
-    group.values.map{|v| v += 1}.inject(&:*)
+    return 1 if self == 1
+    self.prime_division.map{|num, power| power + 1 }.inject(&:*)
   end
 
   # Get array of all numbers that divide evenly into this number
