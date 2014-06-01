@@ -54,7 +54,7 @@ class Fixnum
   end
 
   def factorial
-    @factorial_hash ||= {0 => 0, 1 => 1}
+    @factorial_hash ||= {0 => 1, 1 => 1}
     @factorial_hash[self] || @factorial_hash[self] = (self-1).factorial * self
   end
 
