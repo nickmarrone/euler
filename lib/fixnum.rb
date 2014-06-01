@@ -103,7 +103,7 @@ class Fixnum
       primes.zip(powers).map{|prime, power| prime ** power}.inject(:*)
     end
 
-    divisors.sort.map{|div| [div, self / div]}
+    divisors.sort
   end
 
   # How many divisors does this number have?
