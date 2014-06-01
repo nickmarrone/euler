@@ -62,40 +62,22 @@ class Fixnum
     self.to_s.split('').map(&:to_i)
   end
 
-  # Get array of factors of this number
+  # Get prime factors of this number
   #
-  # @return factors [Array] of [Fixnum]
-  def factors1
+  # @return {Array} of {Fixnum}
+  def prime_factors
     results = []
-    total = 1
-
-    Prime.each(self) do |prime|
-      if self % prime == 0
-        results << prime
-        total *= prime
-        break if total == self
-      end
+    self.prime_division.each do |num, power|
+      power.times { results << num }
     end
 
     results
   end
 
-  def factors2
-    results = []
-    remaining = self
-
-    Prime.each(self) do |prime|
-      if self % prime == 0
-        results << prime
-        remaining /= prime
-        break if remaining == 1
-      end
-    end
-
-    results
-  end
-
-  def factors
+  # Get all divisors of this number (including itself)
+  #
+  # @return {Array} of {Fixnum}
+  def divisors
     primes, powers = self.prime_division.transpose
     exponents = powers.map{|i| (0..i).to_a}
 
@@ -104,6 +86,14 @@ class Fixnum
     end
 
     divisors.sort
+  end
+
+  # Get all proper divisors of this number (does not include itself)
+  # @return {Array} of {Fixnum}
+  def proper_divisors
+    all_divisors = divisors
+    all_divisors.delete(self)
+    all_divisors
   end
 
   # How many divisors does this number have?
@@ -115,18 +105,34 @@ class Fixnum
     self.prime_division.map{|num, power| power + 1 }.inject(&:*)
   end
 
-  # Get array of all numbers that divide evenly into this number
+  # Return 0 for a perfect number, 1 for an abundant number and -1 for a deficient number
   #
-  # @return divisors [Array] of [Fixnum]
-  def divisors
-    results = []
-
-    (1..(self/2)).each do |n|
-      results << n if self % n == 0
-    end
-
-    results
+  # @returns {Fixnum}
+  def perfect_number_comparison
+    self.proper_divisors.inject(&:+) <=> self
   end
+
+  # A perfect number is one where the sum of its proper divisors equals itself
+  #
+  # @returns {Boolean}
+  def perfect?
+    self.proper_divisors.inject(&:+) == self
+  end
+
+  # A deficient number is one where the sum of its proper divisors is less than itself
+  #
+  # @returns {Boolean}
+  def deficient?
+    self.proper_divisors.inject(&:+) < self
+  end
+
+  # An abundant number is one where the sum of its proper divisors is greater than itself
+  #
+  # @returns {Boolean}
+  def abundant?
+    self.proper_divisors.inject(&:+) > self
+  end
+
 
   # Defined as n -> n/2 if even, n -> 3n+1 if odd until n == 1
   def collatz_sequence
