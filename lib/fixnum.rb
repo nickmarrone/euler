@@ -133,7 +133,6 @@ class Fixnum
     self.proper_divisors.inject(&:+) > self
   end
 
-
   # Defined as n -> n/2 if even, n -> 3n+1 if odd until n == 1
   def collatz_sequence
     n = self
@@ -220,5 +219,13 @@ class Array
   def group_numbers
     h = Hash.new{ |hash, key| hash[key] = 0 }
     self.inject(h){ |hash, n| hash[n] += 1; hash }
+  end
+
+  def sum
+    self.inject(&:+)
+  end
+
+  def product
+    self.inject(&:*)
   end
 end
